@@ -13,8 +13,14 @@ defmodule FakeServer.Handlers.FunctionHandler do
          {:ok, access} <- extract_access(state),
          %Request{} = request <- Request.from_cowboy_req(req),
          :ok <- Access.compute_access(access, request),
-         %Response{} = response <- execute_response(request, route) do
+         %Response{cookies: cookies} = response <- execute_response(request, route) do
+      req =
+        Enum.reduce(cookies, req, fn {cookie_name, cookie_value}, req ->
+          :cowboy_req.set_resp_cookie(cookie_name, cookie_value, req)
+        end)
+
       req = :cowboy_req.reply(response.status, response.headers, response.body, req)
+
       {:ok, req, state}
     else
       error ->

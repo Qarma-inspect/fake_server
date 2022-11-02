@@ -14,7 +14,7 @@ defmodule FakeServer.Response do
   """
 
   @enforce_keys [:status]
-  defstruct status: nil, body: "", headers: %{}
+  defstruct status: nil, body: "", headers: %{}, cookies: %{}
 
   @doc """
   Creates a new Response structure. Returns `{:ok, response}` on success or `{:error, reason}` when validation fails
@@ -66,6 +66,12 @@ defmodule FakeServer.Response do
   end
 
   def validate(response), do: {:error, {response, "invalid response type"}}
+
+  def set_cookie({:ok, %__MODULE__{} = response}, name, value), do: set_cookie(response, name, value)
+
+  def set_cookie(%__MODULE__{cookies: cookies} = response, name, value) do
+    %{response | cookies: Map.put(cookies, name, value)}
+  end
 
   @doc """
   Creates a new response with status 200
