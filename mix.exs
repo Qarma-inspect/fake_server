@@ -34,11 +34,11 @@ defmodule FakeServer.Mixfile do
   defp deps do
     [
       {:cowboy, "~> 2.13"},
-      {:faker, "~> 0.19.0-alpha.1", only: :test},
+      {:faker, "~> 0.19.0", only: :test},
       {:ex_doc, "~> 0.35", only: :dev},
       {:req, "~> 0.5.0 or ~> 0.6.0 or ~> 0.7.0", only: :test},
       {:excoveralls, "~> 0.18", only: :test},
-      {:mix_test_watch, "~> 1.2", only: [:dev, :test]}
+      {:mix_test_watch, "~> 1.4", only: [:dev, :test]}
     ]
   end
 
